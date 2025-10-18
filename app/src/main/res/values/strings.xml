@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name" translatable="false">AIzaSyCH05vxMoJxDjHYDfqVQinzY2cNgu3XddE</string>
+    <string name="logo_app_description">Logo de la aplicación</string>
+
+    <!-- Textos del menú -->
+    <string name="btn_ir_mapas">Ir a Mapas</string>
+    <string name="btn_ir_audio">Reproducir Audio</string>
+    <string name="btn_ir_video">Reproducir Video</string>
+    <string name="btn_ir_descarga">Descargar Imagen</string>
+
+</resources>

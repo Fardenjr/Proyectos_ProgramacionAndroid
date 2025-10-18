@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="#222222">
+
+    <TextView
+        android:id="@+id/textTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menú Multimedia"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="32dp" />
+
+    <Button
+        android:id="@+id/btnIrMapas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🗺️ Ver Mapa"
+        android:textColor="@android:color/white"
+        android:background="@color/purple_500"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnIrAudio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🎵 Reproducir Audio"
+        android:textColor="@android:color/white"
+        android:background="@color/purple_500"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnIrVideo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🎬 Reproducir Video"
+        android:textColor="@android:color/white"
+        android:background="@color/purple_500"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnIrDescarga"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🖼️ Descargar Imagen"
+        android:textColor="@android:color/white"
+        android:background="@color/purple_500" />
+</LinearLayout>

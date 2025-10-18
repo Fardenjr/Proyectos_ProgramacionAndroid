@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#222222">
+
+    <TextView
+        android:id="@+id/textTituloDescarga"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Previsualización de imagen"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="16dp" />
+
+    <ImageView
+        android:id="@+id/imageDescarga"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:background="@android:color/darker_gray"
+        android:contentDescription="Imagen descargada"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/btnDescargar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descargar imagen"
+        android:textColor="@android:color/white"
+        android:background="@color/purple_500" />
+</LinearLayout>
