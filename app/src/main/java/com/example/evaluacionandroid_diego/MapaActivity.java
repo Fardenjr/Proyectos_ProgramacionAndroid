@@ -1,6 +1,7 @@
 package com.example.evaluacionandroid_diego;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -8,7 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -19,12 +21,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 public class MapaActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private static final int CODIGO_SOLICITUD_UBICACION = 100;
     private GoogleMap mapa;
     private FusedLocationProviderClient proveedorUbicacion;
-    private boolean modoAgregarMarcador = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +44,29 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         proveedorUbicacion = LocationServices.getFusedLocationProviderClient(this);
-        verificarPermisosUbicacion();
+
+        String apiKey = obtenerClaveGoogleMaps();
+        if (apiKey != null) {
+            // Aquí podrías usar la clave en APIs que la requieran directamente
+            // Por ejemplo: MapsInitializer.initialize(this, MapsInitializer.Renderer.LATEST, null);
+        } else {
+            Toast.makeText(this, "No se pudo obtener la clave de Google Maps", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void verificarPermisosUbicacion() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    CODIGO_SOLICITUD_UBICACION);
-        } else {
-            activarUbicacionUsuario();
+    private String obtenerClaveGoogleMaps() {
+        try {
+            String masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+            SharedPreferences prefs = EncryptedSharedPreferences.create(
+                    "secure_prefs",
+                    masterKeyAlias,
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+            return prefs.getString("google_maps_key", null);
+        } catch (GeneralSecurityException | IOException e) {
+            return null;
         }
     }
 
@@ -61,6 +76,8 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
                     || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mapa.setMyLocationEnabled(true);
                 centrarEnUbicacionActual();
+            } else {
+                Toast.makeText(this, "Permisos insuficientes para mostrar ubicación", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -77,6 +94,8 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
                         LatLng coordenadas = new LatLng(ubicacion.getLatitude(), ubicacion.getLongitude());
                         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadas, 15));
                         mapa.addMarker(new MarkerOptions().position(coordenadas).title("Tu ubicación"));
+                    } else {
+                        Toast.makeText(this, "No se pudo obtener la ubicación actual", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -85,23 +104,10 @@ public class MapaActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mapa = googleMap;
         activarUbicacionUsuario();
-
         mapa.setOnMapClickListener(posicion -> {
             mapa.addMarker(new MarkerOptions()
                     .position(posicion)
                     .title("Marcador personalizado"));
         });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CODIGO_SOLICITUD_UBICACION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                activarUbicacionUsuario();
-            } else {
-                Toast.makeText(this, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }

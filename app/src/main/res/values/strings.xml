@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">AIzaSyCH05vxMoJxDjHYDfqVQinzY2cNgu3XddE</string>
+    <string name="google_maps_key" translatable="false">AIzaSyCH05vxMoJxDjHYDfqVQinzY2cNgu3XddE</string>
     <string name="logo_app_description">Logo de la aplicación</string>
 
     <!-- Textos del menú -->
