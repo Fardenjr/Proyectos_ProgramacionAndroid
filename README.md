@@ -42,7 +42,6 @@ Este proyecto es una aplicación Android desarrollada como parte de la evaluaci�
 ##  Cómo Ejecutar la Aplicación de Forma Segura
 
 1. Clonar el repositorio:
-   ```bash
 - Importar el proyecto en Android Studio.
 - Ejecutar la aplicación en un dispositivo físico o emulador con Android 10+.
 - Verificar que los permisos requeridos estén correctamente concedidos (ubicación, almacenamiento, cámara si aplica).
